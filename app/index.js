@@ -239,3 +239,25 @@ function refreshTotpToken() {
         totpRemainingSecondsCircle.set(0.0);
     }
 }
+
+// https://stackoverflow.com/a/901144 -> safe version that works in IE
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href
+  name = name.replace(/[\[\]]/g, '\\$&')
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    results = regex.exec(url)
+  if (!results) return null
+  if (!results[2]) return ''
+  return decodeURIComponent(results[2].replace(/\+/g, ' '))
+}
+
+const prefilledToken = getParameterByName('secret')
+
+if (prefilledToken) {
+  console.log('i am here')
+  var myInputSecret = document.getElementById('inputSecret')
+  myInputSecret.value = prefilledToken.replace(/[\W_]+/g, ' ')
+  var evt = new Event('input')
+  myInputSecret.dispatchEvent(evt)
+}
+
