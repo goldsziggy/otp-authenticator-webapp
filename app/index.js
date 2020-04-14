@@ -34,7 +34,7 @@ function showToast(value, timeout) {
   toastElement.innerText = value
 
   document.body.appendChild(toastElement)
-  setTimeout(function() {
+  setTimeout(function () {
     document.body.removeChild(toastElement)
   }, timeout)
 }
@@ -47,7 +47,7 @@ const totpRemainingSecondsCircle = new ProgressBar.Circle(
     strokeWidth: 50,
     duration: 1000,
     color: 'inherit', // null to support css styling
-    trailColor: 'transparent' //  null to support css styling
+    trailColor: 'transparent', //  null to support css styling
   }
 )
 totpRemainingSecondsCircle.svg.style.transform = 'scale(-1, 1)'
@@ -55,7 +55,7 @@ totpRemainingSecondsCircle.svg.style.transform = 'scale(-1, 1)'
 const qrImage = new QRCode(document.getElementById('otpauth-qr'), {
   colorDark: '#000000',
   colorLight: '#ffffff',
-  correctLevel: QRCode.CorrectLevel.Q
+  correctLevel: QRCode.CorrectLevel.Q,
 })
 qrImage._el.getElementsByTagName('img')[0].style.width = '100%' // FIX: scaling problem with padding
 
@@ -184,20 +184,20 @@ document.getElementById('inputIssuer').addEventListener(
   },
   false
 )
-;['click', 'tap'].forEach(function(event) {
+;['click', 'tap'].forEach(function (event) {
   document.getElementById('totp-token').addEventListener(
     event,
-    function() {
+    function () {
       copyToClipboard(this.innerText)
       showToast('Token copied!')
     },
     false
   )
 })
-;['click', 'tap'].forEach(function(event) {
+;['click', 'tap'].forEach(function (event) {
   document.getElementById('otpauth-qr').addEventListener(
     event,
-    function() {
+    function () {
       const secret = document.getElementById('inputSecret').value
       const account = document.getElementById('inputAccount').value
       const issuer = document.getElementById('inputIssuer').value
@@ -208,28 +208,28 @@ document.getElementById('inputIssuer').addEventListener(
     false
   )
 })
-;['click', 'tap'].forEach(function(event) {
+;['click', 'tap'].forEach(function (event) {
   document.getElementById('otpauth-button').addEventListener(
     event,
-    function() {
+    function () {
       toggleOtpAuthDetails()
     },
     false
   )
 })
-;['click', 'tap'].forEach(function(event) {
+;['click', 'tap'].forEach(function (event) {
   document.getElementById('totp-label').addEventListener(
     event,
-    function() {
+    function () {
       toggleOtpAuthDetails()
     },
     false
   )
 })
-;['click', 'tap'].forEach(function(event) {
+;['click', 'tap'].forEach(function (event) {
   document.getElementById('light-switch').addEventListener(
     event,
-    function() {
+    function () {
       toggleDarkMode()
     },
     false
@@ -295,25 +295,3 @@ if (prefilledToken) {
   var evt = new Event('input')
   myInputSecret.dispatchEvent(evt)
 }
-
-// https://stackoverflow.com/a/901144 -> safe version that works in IE
-function getParameterByName(name, url) {
-  if (!url) url = window.location.href
-  name = name.replace(/[\[\]]/g, '\\$&')
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url)
-  if (!results) return null
-  if (!results[2]) return ''
-  return decodeURIComponent(results[2].replace(/\+/g, ' '))
-}
-
-const prefilledToken = getParameterByName('secret')
-
-if (prefilledToken) {
-  console.log('i am here')
-  var myInputSecret = document.getElementById('inputSecret')
-  myInputSecret.value = prefilledToken.replace(/[\W_]+/g, ' ')
-  var evt = new Event('input')
-  myInputSecret.dispatchEvent(evt)
-}
-
